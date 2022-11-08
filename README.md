@@ -6,7 +6,7 @@ As an essential part of Farm animal Genotype-Tissue Expression (**FarmGTEx**) pr
 
 
 
-![PigGTEx-pipeline-V1.1](https://raw.githubusercontent.com/FarmGTEx/PigGTEx-Pipeline-v0/master/PigGTEx-pipeline-V1.1.svg)
+![PigGTEx-pipeline-V1.1](https://raw.githubusercontent.com/FarmGTEx/PigGTEx-Pipeline-v0/master/PigGTEx-pipeline-V1.1.jpg)
 
 
 
