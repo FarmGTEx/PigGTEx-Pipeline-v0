@@ -1,0 +1,35 @@
+###################################################################################
+###################        Process of building TWAS model       ###################
+###################################################################################
+###=============================================###
+##Extract the corresponding information from the data on Ensembl and prepare the gene annotation file
+1.makeAnnotation.R
+
+###=============================================###
+##Prepare corresponding data
+2.tissues_job.sh #Prepare files that do not require chromosome segmentation, and pass parameters into relevant scripts
+3.tissues_chr_jobs.sh #Prepare the documents that need chromosome sorting
+
+###=============================================###
+##Building models
+4.tissues_make_models.sh
+5.parallel_tiss_chrom_training.R #The author's source code is modified so that it can run in parallel
+6.parallel_nested_cv_elnet.R #Modified the author's source code, and added the transfer parameters of 'tissue' and 'type' (to determine the location of the result file)
+
+###=============================================###
+##Merge parallel files
+7.combined.sh #Each tissue and each type are processed separately
+
+###=============================================###
+##Building model database files
+8.make_db.R #Modified the author's source code, and added the parameters of 'tissue' and 'type' (to determine the location of the result file)
+
+###=============================================###
+##Merge model covariate files and compress
+9.make_allchr_covariances_gz.sh 
+
+###=============================================###
+##Build the covariances file needed to run smultixcan
+#The script for constructing the file is from, https://github.com/hakyimlab/summary-gwas-imputation
+10.meta_covariance_for_models_current.py #Some modifications have been made to the source code of the author
+11.make_smulitxcan_covariances.sh 
