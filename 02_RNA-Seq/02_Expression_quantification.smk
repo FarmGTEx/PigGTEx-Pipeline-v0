@@ -39,6 +39,7 @@ rule expr_exon:
 rule expr_enhancer:
     input:
         gtf="Sus_scrofa.Sscrofa11.1.100.gtf"
+        enhancer_bed="enhancer.bed"
     output:
         out_saf="enhancer.saf",
         expr_file="{sample}.enhancer.exp.txt"
@@ -46,8 +47,8 @@ rule expr_enhancer:
         '''
         # Step 1. Prepare saf file
         grep -v '#' {input.gtf} | awk -v OFS="\t" '{{print $1,$4,$5,$7}}' | sort -k1,1 -k2,2n | uniq > Sus_scrofa.Sscrofa11.1.100.sort.bed
-        bedtools intersect -a enhancer.bed -b Sus_scrofa.Sscrofa11.1.100.sort.bed -wa -wb | awk -v OFS="\t" '{{print $1,$2,$3,$NF}}' | uniq | awk '{{print "enhancer&"$1":"$2":"$3"\t"$1"\t"$2"\t"$3"\t"$4}}' | sed '1i GeneID\tChr\tStart\tEnd\tStrand' > {output.out_saf}
-        
+        bedtools intersect -a {enhancer_bed} -b Sus_scrofa.Sscrofa11.1.100.sort.bed -wao -f 1.0 -s | awk '$14==0{print $4"\t"$1"\t"$2"\t"$3"\t"$6}' | sed 's/chr//g' | sed '1i GeneID\tChr\tStart\tEnd\tStrand' > {output.out_saf}
+
         # Step 2. Count quantification
         featureCounts -T 10 -p -F SAF -a {output.out_saf} -o {sample}.enhancer.exp.txt {sample}-STARAligned.sortedByCoord.out.bam
         '''
