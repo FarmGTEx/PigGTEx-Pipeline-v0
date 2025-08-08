@@ -62,7 +62,7 @@ get_cis_genotype <- function(gt_df, snp_annot, coords, cis_window) {
   column_labels <- colnames(cis_gt)
   row_labels <- rownames(cis_gt)
   # Convert cis_gt to a matrix for glmnet
-  cis_gt <- matrix(as.matrix(cis_gt), ncol=ncol(cis_gt)) # R is such a bad language.
+  cis_gt <- matrix(as.matrix(cis_gt), ncol=ncol(cis_gt))
   colnames(cis_gt) <- column_labels
   rownames(cis_gt) <- row_labels
   cis_gt
